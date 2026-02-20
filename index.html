@@ -1,111 +1,355 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Empower With Sonia</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Empower with Sonia | Career Coach</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg: #faf8f5;
+      --text: #1a1a1a;
+      --text-muted: #5c5c5c;
+      --accent: #2d5a4a;
+      --accent-light: #3d7a65;
+      --highlight: #c9a227;
+      --white: #fff;
+      --shadow: rgba(0,0,0,0.06);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
-      font-family: 'Inter', sans-serif;
-      background-color: #fefefe;
-      color: #333;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 400;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
     }
 
-    header {
-      background-color: #6b4eff;
-      color: white;
-      padding: 4rem 2rem;
-      text-align: center;
+    /* Header & Hamburger */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 1rem 1.5rem;
+      background: var(--bg);
+      border-bottom: 1px solid var(--shadow);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
-    header h1 {
-      margin: 0;
-      font-size: 2.5rem;
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--accent);
     }
 
-    header p {
-      font-size: 1.25rem;
-      margin-top: 0.5rem;
+    .hamburger {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 44px;
+      height: 44px;
+      padding: 10px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      z-index: 110;
+      transition: transform 0.2s ease;
     }
 
-    section {
-      padding: 3rem 2rem;
-      max-width: 800px;
-      margin: auto;
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--accent);
+      border-radius: 1px;
+      transition: transform 0.3s ease, opacity 0.2s ease;
     }
 
-    .services ul {
+    .hamburger[aria-expanded="true"] span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+    .hamburger[aria-expanded="true"] span:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger[aria-expanded="true"] span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    /* Overlay menu */
+    .nav-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(26, 26, 26, 0.6);
+      z-index: 105;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .nav-overlay.is-open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .nav-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: min(320px, 85vw);
+      height: 100vh;
+      background: var(--white);
+      z-index: 106;
+      padding: 5rem 2rem 2rem;
+      box-shadow: -4px 0 24px var(--shadow);
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+    }
+
+    .nav-overlay.is-open .nav-drawer {
+      transform: translateX(0);
+    }
+
+    .nav-drawer ul {
       list-style: none;
+      margin: 0;
       padding: 0;
     }
 
-    .services li {
-      background: #f3f3f3;
-      margin-bottom: 1rem;
-      padding: 1rem;
-      border-left: 4px solid #6b4eff;
-    }
-
-    footer {
-      text-align: center;
-      background: #f9f9f9;
-      padding: 2rem;
-      font-size: 0.9rem;
-      color: #777;
-    }
-
-    .btn {
-      display: inline-block;
-      background: #6b4eff;
-      color: white;
-      padding: 0.75rem 1.5rem;
-      border-radius: 4px;
+    .nav-drawer a {
+      display: block;
+      padding: 0.75rem 0;
+      font-size: 1.15rem;
+      color: var(--text);
       text-decoration: none;
-      margin-top: 1rem;
+      border-bottom: 1px solid var(--shadow);
+      transition: color 0.2s ease, padding-left 0.2s ease;
     }
 
-    @media (max-width: 600px) {
-      header h1 {
-        font-size: 2rem;
-      }
-      section {
-        padding: 2rem 1rem;
-      }
+    .nav-drawer a:hover {
+      color: var(--accent);
+      padding-left: 0.5rem;
+    }
+
+    /* Main content */
+    main {
+      padding-top: 4rem;
+      min-height: 100vh;
+    }
+
+    .hero {
+      padding: 4rem 1.5rem 5rem;
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.25rem, 5vw, 3.25rem);
+      font-weight: 600;
+      color: var(--accent);
+      margin: 0 0 1rem;
+      line-height: 1.2;
+    }
+
+    .hero .tagline {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    section {
+      padding: 3rem 1.5rem;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    section h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.75rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin: 0 0 1.25rem;
+    }
+
+    #about p {
+      margin: 0 0 1rem;
+      color: var(--text);
+    }
+
+    /* Footer & Contact */
+    footer {
+      background: var(--accent);
+      color: var(--white);
+      padding: 3rem 1.5rem 2rem;
+      margin-top: 3rem;
+    }
+
+    .footer-inner {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    footer h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin: 0 0 1.25rem;
+    }
+
+    .contact-ways {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem 2rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .contact-ways li {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .contact-ways a {
+      color: var(--white);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s ease, text-decoration 0.2s ease;
+    }
+
+    .contact-ways a:hover {
+      color: var(--highlight);
+      text-decoration: underline;
+    }
+
+    .contact-ways .label {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    .footer-bottom {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      font-size: 0.9rem;
+      opacity: 0.9;
     }
   </style>
 </head>
 <body>
-
-  <header>
-    <h1>Empower With Sonia</h1>
-    <p>Transformative Coaching & Consulting for Ambitious Women</p>
+  <header class="header">
+    <a href="#" class="logo">Empower with Sonia</a>
+    <button class="hamburger" type="button" aria-expanded="false" aria-controls="nav-drawer" aria-label="Open menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </header>
 
-  <section class="about">
-    <h2>About Me</h2>
-    <p>Hi, I'm Sonia — a certified coach and leadership consultant. I help women unlock their potential, overcome limiting beliefs, and thrive in their personal and professional lives.</p>
-  </section>
+  <div class="nav-overlay" id="nav-overlay">
+    <nav class="nav-drawer" id="nav-drawer" aria-label="Main navigation">
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#about">About Me</a></li>
+      </ul>
+    </nav>
+  </div>
 
-  <section class="services">
-    <h2>Services</h2>
-    <ul>
-      <li><strong>1:1 Coaching Sessions</strong> – Personalized guidance to help you break through barriers.</li>
-      <li><strong>Career Clarity Package</strong> – Find your direction and take aligned action.</li>
-      <li><strong>Workshops & Speaking</strong> – Book me to speak at your next event or team session.</li>
-    </ul>
-  </section>
+  <main>
+    <section class="hero">
+      <h1>Your career, empowered.</h1>
+      <p class="tagline">Guidance to clarify your path, build confidence, and reach your next milestone.</p>
+    </section>
 
-  <section class="contact">
-    <h2>Contact Me</h2>
-    <p>Ready to get started? Email me at <a href="mailto:hello@empowerwithsonia.com">hello@empowerwithsonia.com</a></p>
-    <a class="btn" href="mailto:hello@empowerwithsonia.com">Book a Free Discovery Call</a>
-  </section>
+    <section id="about">
+      <h2>About Me</h2>
+      <p>I’m a career coach who helps professionals get clear on what they want, overcome blocks, and take action. Whether you’re pivoting, advancing, or redefining success, we’ll work together so you can lead your career with intention.</p>
+      <p>My approach is practical, supportive, and tailored to you—so you can make decisions you’re proud of and build a career that fits your life.</p>
+    </section>
+  </main>
 
   <footer>
-    &copy; 2025 Empower With Sonia. All rights reserved.
+    <div class="footer-inner">
+      <h3>Get in Touch</h3>
+      <ul class="contact-ways">
+        <li>
+          <span class="label">Email:</span>
+          <a href="mailto:hello@empowerwithsonia.com">hello@empowerwithsonia.com</a>
+        </li>
+        <li>
+          <span class="label">LinkedIn:</span>
+          <a href="https://www.linkedin.com/in/sowadhwa" target="_blank" rel="noopener noreferrer">Connect on LinkedIn</a>
+        </li>
+        <li>
+          <span class="label">Book a call:</span>
+          <a href="#">Schedule a discovery call</a>
+        </li>
+      </ul>
+      <div class="footer-bottom">
+        © Empower with Sonia. All rights reserved.
+      </div>
+    </div>
   </footer>
 
+  <script>
+    (function () {
+      var hamburger = document.querySelector('.hamburger');
+      var overlay = document.getElementById('nav-overlay');
+      var drawer = document.getElementById('nav-drawer');
+
+      function openMenu() {
+        hamburger.setAttribute('aria-expanded', 'true');
+        overlay.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeMenu() {
+        hamburger.setAttribute('aria-expanded', 'false');
+        overlay.classList.remove('is-open');
+        document.body.style.overflow = '';
+      }
+
+      hamburger.addEventListener('click', function () {
+        if (overlay.classList.contains('is-open')) {
+          closeMenu();
+        } else {
+          openMenu();
+        }
+      });
+
+      overlay.addEventListener('click', function (e) {
+        if (e.target === overlay) closeMenu();
+      });
+
+      drawer.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', closeMenu);
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && overlay.classList.contains('is-open')) {
+          closeMenu();
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
